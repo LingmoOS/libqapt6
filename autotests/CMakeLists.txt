@@ -18,14 +18,14 @@ configure_file(
 ecm_add_test(dependencyinfotest.cpp
     LINK_LIBRARIES
         Qt6::Test
-        QApt::Main)
+        QApt6::Main)
 
 ecm_add_test(sourceslisttest.cpp
     LINK_LIBRARIES
         Qt6::Test
-        QApt::Main)
+        QApt6::Main)
 
 ecm_add_test(transactionerrorhandlingtest.cpp
     LINK_LIBRARIES
         Qt6::Test
-        QApt::Main)
+        QApt6::Main)
