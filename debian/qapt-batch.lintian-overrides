@@ -1,2 +1,0 @@
-# doesn't need a manpage, only run from scripts or internally
-qapt-batch: no-manual-page [usr/bin/qapt-batch]

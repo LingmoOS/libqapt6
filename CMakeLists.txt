@@ -48,7 +48,7 @@ include_directories(
 
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX QAPT
                   VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/qaptversion.h"
-                  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/QAptConfigVersion.cmake"
+                  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/QApt6ConfigVersion.cmake"
                   SOVERSION ${PROJECT_SOVERSION})
 
 set(QAPT_WORKER_VERSION ${PROJECT_SOVERSION})
@@ -115,12 +115,12 @@ endif()
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/QApt")
 
 configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/QAptConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/QAptConfig.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/QApt6Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/QApt6Config.cmake"
     INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR})
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/QAptConfig.cmake"
-              "${CMAKE_CURRENT_BINARY_DIR}/QAptConfigVersion.cmake"
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/QApt6Config.cmake"
+              "${CMAKE_CURRENT_BINARY_DIR}/QApt6ConfigVersion.cmake"
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel)
 install(EXPORT QAptTargets
