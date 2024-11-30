@@ -143,11 +143,11 @@ if(WITH_UTILS)
     #DOC_SUBDIR
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqapt.pc.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/libqapt.pc
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libqapt6.pc.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/libqapt6.pc
     @ONLY)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libqapt.pc
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libqapt6.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
     COMPONENT Devel)
 
