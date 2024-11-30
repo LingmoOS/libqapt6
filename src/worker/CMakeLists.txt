@@ -52,7 +52,7 @@ target_link_libraries(qaptworker${QAPT_WORKER_VERSION}
     Qt6::Core5Compat
     PolkitQt6-1::Core
     util
-    QApt::Main)
+    QApt${PROJECT_VERSION_MAJOR}::Main)
 
 install(TARGETS qaptworker${QAPT_WORKER_VERSION} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 

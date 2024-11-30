@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 
-export QT_SELECT=qt5
+export QT_SELECT=qt6
 
 %:
-	dh $@ --with kf5,pkgkde_symbolshelper
+	dh $@ --with kf6,pkgkde_symbolshelper
 
 override_dh_auto_test:
 	# Disable dh_auto_test

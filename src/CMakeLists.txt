@@ -1,6 +1,3 @@
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
 set(qapt_SRCS
     backend.cpp
     cache.cpp
@@ -46,20 +43,21 @@ configure_file(dbusinterfaces_p.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/dbusinterfac
 
 ecm_create_qm_loader(qapt_SRCS libqapt)
 
-add_library(QApt SHARED ${qapt_SRCS})
-add_library(QApt::Main ALIAS QApt)
+add_library(QApt${PROJECT_VERSION_MAJOR} SHARED ${qapt_SRCS})
+add_library(QApt${PROJECT_VERSION_MAJOR}::Main ALIAS QApt${PROJECT_VERSION_MAJOR})
 
 # Set header paths for target so the utils can find them.
-target_include_directories(QApt PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}/..>")
-target_include_directories(QApt INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/QApt>" )
+target_include_directories(QApt${PROJECT_VERSION_MAJOR} PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}/..>")
+target_include_directories(QApt${PROJECT_VERSION_MAJOR} PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/;${CMAKE_CURRENT_BINARY_DIR}/>")
+target_include_directories(QApt${PROJECT_VERSION_MAJOR} INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/QApt>" )
 
-set_target_properties(QApt
+set_target_properties(QApt${PROJECT_VERSION_MAJOR}
     PROPERTIES
     VERSION ${QAPT_VERSION_STRING}
     SOVERSION ${QAPT_SOVERSION}
     EXPORT_NAME Main)
 
-target_link_libraries(QApt
+target_link_libraries(QApt${PROJECT_VERSION_MAJOR}
     PUBLIC
         Qt6::Widgets
         KF6::I18n
@@ -68,7 +66,7 @@ target_link_libraries(QApt
         Qt6::DBus
         ${XAPIAN_LIBRARIES})
 
-install(TARGETS QApt EXPORT QAptTargets LIBRARY DESTINATION ${KF6_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS QApt${PROJECT_VERSION_MAJOR} EXPORT QAptTargets LIBRARY DESTINATION ${KF6_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ecm_generate_headers(QAPT_CAMEL_CASE_HEADERS
     HEADER_NAMES
@@ -87,7 +85,7 @@ ecm_generate_headers(QAPT_CAMEL_CASE_HEADERS
         Transaction
 
   REQUIRED_HEADERS QAPT_HEADERS
-  PREFIX QApt)
+  PREFIX QApt${PROJECT_VERSION_MAJOR})
 
-install(FILES ${QAPT_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/qapt COMPONENT Devel)
-install(FILES ${QAPT_CAMEL_CASE_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/QApt COMPONENT Devel)
+install(FILES ${QAPT_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/qapt${PROJECT_VERSION_MAJOR} COMPONENT Devel)
+install(FILES ${QAPT_CAMEL_CASE_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/QApt${PROJECT_VERSION_MAJOR} COMPONENT Devel)
