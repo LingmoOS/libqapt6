@@ -30,7 +30,7 @@
 // Own includes
 #include "aptworker.h"
 #include "qaptauthorization.h"
-#include "transaction.h"
+#include "transaction.hpp"
 #include "transactionqueue.h"
 #include "workeradaptor.h"
 #include "urihelper.h"

@@ -21,7 +21,7 @@
 #include "changelog.h"
 
 // Qt includes
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSharedData>
 #include <QStringBuilder>
 #include <QStringList>
@@ -69,15 +69,14 @@ public:
 void ChangelogEntryPrivate::parseData(const QString &sourcePackage)
 {
     QStringList lines = data.split('\n');
-    QRegExp rxInfo(QString("^%1 \\((.*)\\)(.*)$").arg(QRegExp::escape(sourcePackage)));
+    QRegularExpression rxInfo(QString("^%1 \\((.*)\\)(.*)$").arg(QRegularExpression::escape(sourcePackage)));
 
     QString versionLine = lines.first();
     lines.removeFirst();
-    rxInfo.indexIn(versionLine);
+    QRegularExpressionMatch matchInfo = rxInfo.match(versionLine);
 
-    QStringList list = rxInfo.capturedTexts();
-    if (list.count() > 1) {
-        version = list.at(1);
+    if (matchInfo.hasMatch()) {
+        version = matchInfo.captured(1);
     }
 
     foreach (const QString &line, lines) {
@@ -86,27 +85,24 @@ void ChangelogEntryPrivate::parseData(const QString &sourcePackage)
             description.append(line % '\n');
 
             // Grab CVEs
-            QRegExp rxCVE("CVE-\\d{4}-\\d{4}");
-            rxCVE.indexIn(line);
-            QStringList cveMatches = rxCVE.capturedTexts();
-
-            for (const QString &match : cveMatches)
-            {
-                if (!match.isEmpty())
-                    CVEUrls += QString("http://web.nvd.nist.gov/view/vuln/detail?vulnId=%1;%1").arg(match);
+            QRegularExpression rxCVE("CVE-\\d{4}-\\d{4}");
+            QRegularExpressionMatchIterator it = rxCVE.globalMatch(line);
+            while (it.hasNext()) {
+                QRegularExpressionMatch matchCVE = it.next();
+                if (matchCVE.isValid())
+                    CVEUrls += QString("http://web.nvd.nist.gov/view/vuln/detail?vulnId=%1;%1").arg(matchCVE.captured());
             }
 
             continue;
         }
 
-        QRegExp rxDate("^ -- (.+) (<.+>)  (.+)$");
-        rxDate.indexIn(line);
-        list = rxDate.capturedTexts();
+        QRegularExpression rxDate("^ -- (.+) (<.+>)  (.+)$");
+        QRegularExpressionMatch matchDate = rxDate.match(line);
 
-        if (list.count() > 1) {
+        if (matchDate.hasMatch()) {
             time_t issueTime = -1;
-            if (RFC1123StrToTime(list.at(3).toUtf8().data(), issueTime)) {
-                issueDate = QDateTime::fromTime_t(issueTime);
+            if (RFC1123StrToTime(matchDate.captured(3).toUtf8().data(), issueTime)) {
+                issueDate = QDateTime::fromSecsSinceEpoch(issueTime);
                 break;
             }
         }

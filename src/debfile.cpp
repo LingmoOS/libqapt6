@@ -24,6 +24,7 @@
 #include <QProcess>
 #include <QStringBuilder>
 #include <QTemporaryFile>
+#include <QRegularExpression>
 
 // Must be before APT_PKG_ABI checks!
 #include <apt-pkg/macros.h>
@@ -159,14 +160,15 @@ QString DebFile::longDescription() const
     QStringList sections = rawDescription.split(QLatin1String("\n ."));
 
     for (int i = 0; i < sections.count(); ++i) {
-        sections[i].replace(QRegExp(QLatin1String("\n( |\t)+(-|\\*)")),
-                                QLatin1String("\n\r ") % QString::fromUtf8("\xE2\x80\xA2"));
+        QRegularExpression rxList(QLatin1String("\n( |\t)+(-|\\*)"));
+        sections[i].replace(rxList, QLatin1String("\n\r ") % QString::fromUtf8("\xE2\x80\xA2"));
         // There should be no new lines within a section.
         sections[i].remove(QLatin1Char('\n'));
         // Hack to get the lists working again.
         sections[i].replace(QLatin1Char('\r'), QLatin1Char('\n'));
         // Merge multiple whitespace chars into one
-        sections[i].replace(QRegExp(QLatin1String("\\ \\ +")), QChar::fromLatin1(' '));
+        QRegularExpression rxWhitespace(QLatin1String("\\ \\ +"));
+        sections[i].replace(rxWhitespace, QChar::fromLatin1(' '));
         // Remove the initial whitespace
         sections[i].remove(0, 1);
         // Append to parsedDescription

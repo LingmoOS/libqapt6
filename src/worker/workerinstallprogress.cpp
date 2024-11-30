@@ -40,7 +40,7 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "transaction.h"
+#include "transaction.hpp"
 
 using namespace std;
 

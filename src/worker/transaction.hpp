@@ -27,6 +27,7 @@
 #include <QObject>
 #include <QDBusContext>
 #include <QDBusVariant>
+#include <qmutex.h>
 
 // Own includes
 #include "downloadprogress.h"
@@ -150,7 +151,7 @@ private:
     // Other data
     QMap<int, QString> m_roleActionMap;
     QTimer *m_idleTimer;
-    QMutex m_dataMutex;
+    QRecursiveMutex m_dataMutex;
     QString m_service;
 
     // Private functions

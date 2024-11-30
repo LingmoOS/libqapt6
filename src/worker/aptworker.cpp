@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "aptworker.h"
+#include "transaction.hpp"
 
 // Qt includes
 #include <QDateTime>
@@ -47,6 +48,7 @@
 // System includes
 #include <sys/statvfs.h>
 #include <sys/statfs.h>
+#include <unistd.h>
 #define RAMFS_MAGIC     0x858458f6
 
 // Own includes
@@ -54,7 +56,6 @@
 #include "cache.h"
 #include "debfile.h"
 #include "package.h"
-#include "transaction.h"
 #include "workeracquire.h"
 #include "workerinstallprogress.h"
 

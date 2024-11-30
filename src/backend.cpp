@@ -41,6 +41,7 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/upgrade.h>
+#include <qdatetime.h>
 
 // Xapian includes
 #undef slots
@@ -803,8 +804,8 @@ bool Backend::xapianIndexNeedsUpdate() const
 
     // If the cache has been modified after the xapian timestamp, we need to rebuild
     QDateTime aptCacheTime = QFileInfo(d->config->findFile("Dir::Cache::pkgcache")).lastModified();
-
-    return ((d->xapianTimeStamp < aptCacheTime.toTime_t()) || (!d->xapianIndexExists));
+    
+    return ((QDateTime::fromSecsSinceEpoch(d->xapianTimeStamp) < aptCacheTime) || (!d->xapianIndexExists));
 }
 
 bool Backend::openXapianIndex()
@@ -812,7 +813,7 @@ bool Backend::openXapianIndex()
     Q_D(Backend);
 
     QFileInfo timeStamp(QLatin1String("/var/lib/apt-xapian-index/update-timestamp"));
-    d->xapianTimeStamp = timeStamp.lastModified().toTime_t();
+    d->xapianTimeStamp = timeStamp.lastModified().toSecsSinceEpoch();
 
     if(d->xapianDatabase) {
         delete d->xapianDatabase;

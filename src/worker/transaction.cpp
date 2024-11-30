@@ -19,18 +19,20 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "transaction.h"
+#include "transaction.hpp"
 
 // Qt includes
 #include <QTimer>
 #include <QUuid>
 #include <QDBusConnection>
+#include <qmutex.h>
 
 // Own includes
 #include "qaptauthorization.h"
 #include "transactionadaptor.h"
 #include "transactionqueue.h"
 #include "worker/urihelper.h"
+
 
 #define IDLE_TIMEOUT 30000 // 30 seconds
 
@@ -58,7 +60,7 @@ Transaction::Transaction(TransactionQueue *queue, int userId,
     , m_safeUpgrade(true)
     , m_replaceConfFile(false)
     , m_frontendCaps(QApt::NoCaps)
-    , m_dataMutex(QMutex::Recursive)
+    , m_dataMutex()
 {
     new TransactionAdaptor(this);
     QDBusConnection connection = QDBusConnection::systemBus();

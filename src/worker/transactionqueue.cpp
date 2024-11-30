@@ -27,7 +27,7 @@
 
 // Own includes
 #include "aptworker.h"
-#include "transaction.h"
+#include "transaction.hpp"
 
 TransactionQueue::TransactionQueue(QObject *parent, AptWorker *worker)
     : QObject(parent)

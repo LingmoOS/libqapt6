@@ -33,7 +33,7 @@
 
 // Own includes
 #include "aptworker.h"
-#include "transaction.h"
+#include "transaction.hpp"
 
 #include <unistd.h>
 

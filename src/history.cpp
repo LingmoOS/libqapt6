@@ -26,6 +26,7 @@
 #include <QProcess>
 #include <QSharedData>
 #include <QStringBuilder>
+#include <QRegularExpression>
 
 // APT includes
 #include <apt-pkg/configuration.h>
@@ -126,7 +127,8 @@ void HistoryItemPrivate::parseData(const QString &data)
 
             QString actionPackages = keyValue.value(1);
             // Remove arch info
-            actionPackages.remove(QRegExp(QLatin1String(":\\w+")));
+            QRegularExpression rxArch(QLatin1String(":\\w+"));
+            actionPackages.remove(rxArch);
 
             for (QString package : actionPackages.split(QLatin1String("), "))) {
                 if (!package.endsWith(QLatin1Char(')'))) {
