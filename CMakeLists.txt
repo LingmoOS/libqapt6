@@ -126,9 +126,9 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/QApt6Config.cmake"
 install(EXPORT QAptTargets
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         FILE QAptTargets.cmake
-        NAMESPACE QApt:: )
+        NAMESPACE QApt6:: )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qaptversion.h
-        DESTINATION include/qapt
+        DESTINATION include/qapt6
         COMPONENT Devel)
 
 add_subdirectory(autotests)
