@@ -21,7 +21,8 @@
 #ifndef COMMITWIDGET_H
 #define COMMITWIDGET_H
 
-#include <KVBox>
+#include <QWidget>
+#include <QVBoxLayout>
 
 class QLabel;
 class QProgressBar;
@@ -30,7 +31,7 @@ namespace QApt {
     class Transaction;
 }
 
-class CommitWidget : public KVBox
+class CommitWidget : public QWidget
 {
     Q_OBJECT
 public:

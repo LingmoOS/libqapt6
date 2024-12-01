@@ -18,28 +18,38 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "qapttest.h"
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
-#include <KDE/KLocale>
+#include "TestQApt.h"
 
-static const char description[] =
-    I18N_NOOP("A KDE 4 Application");
-
-static const char version[] = "0.1";
+#include <QApplication>
+#include <QCommandLineParser>
+#include <QTranslator>
+#include <QLocale>
+#include <QIcon>
 
 int main(int argc, char **argv)
 {
-    KAboutData about("qapttest", 0, ki18n("LibQApt test"), version, ki18n(description),
-                     KAboutData::License_GPL, ki18n("(C) 2010 Jonathan Thomas"), KLocalizedString(), 0, "echidnaman@kubuntu.org");
-    about.addAuthor( ki18n("Jonathan Thomas"), KLocalizedString(), "echidnaman@kubuntu.org" );
-    KCmdLineArgs::init(argc, argv, &about);
+    QApplication app(argc, argv);
 
-    KApplication app;
+    // Set application information
+    QCoreApplication::setApplicationName("qapttest");
+    QCoreApplication::setApplicationVersion("0.1");
+    QCoreApplication::setOrganizationDomain("kubuntu.org");
+    QCoreApplication::setOrganizationName("Kubuntu");
 
+    // Load translations
+    QTranslator translator;
+    const QStringList uiLanguages = QLocale::system().uiLanguages();
+    for (const QString &locale : uiLanguages) {
+        const QString baseName = "qapttest_" + QLocale(locale).name();
+        if (translator.load(":/i18n/" + baseName)) {
+            app.installTranslator(&translator);
+            break;
+        }
+    }
+
+    // Create and show the main widget
     QAptTest *widget = new QAptTest;
-
     widget->show();
+
     return app.exec();
 }

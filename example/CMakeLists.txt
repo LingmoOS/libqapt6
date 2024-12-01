@@ -1,26 +1,13 @@
-project(qapttest)
-cmake_minimum_required(VERSION 2.6.0)
+cmake_minimum_required(VERSION 3.15.0)
+project(TestQApt6 VERSION 0.1.0 LANGUAGES C CXX)
 
-find_package(KDE4 REQUIRED)
-include(FindPkgConfig REQUIRED)
-find_package(QApt REQUIRED)
-include(KDE4Defaults)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
-set(qapttest_SRCS
-    main.cpp
-    qapttest.cpp
-    cacheupdatewidget.cpp
-    commitwidget.cpp
- )
+find_package(Qt6 REQUIRED Core Core5Compat DBus Widgets)
 
-include( FindPkgConfig )
+find_package(QApt6 REQUIRED)
 
-add_executable(qaptest ${qapttest_SRCS})
-
-target_link_libraries(qaptest ${KDE4_KDEUI_LIBS}
-                              ${KDE4_KIO_LIBS}
-                              ${QAPT_LIBRARY}
-                              DebconfKDE::Main)
-
-install(TARGETS qaptest ${INSTALL_TARGETS_DEFAULT_ARGS} )
-
+add_executable(TestQApt6 main.cpp TestQApt.cpp commitwidget.cpp cacheupdatewidget.cpp)
+target_link_libraries(TestQApt6 QApt6::Main)

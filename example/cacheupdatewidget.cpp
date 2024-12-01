@@ -25,33 +25,42 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QStandardItemModel>
+#include <QVBoxLayout>
+#include <QIcon>
 
-#include <KIcon>
-#include <KGlobal>
-#include <KLocale>
-#include <KDebug>
+#include <QDebug>
 
-#include <LibQApt/Transaction>
+#include <QApt6/Transaction>
 
 CacheUpdateWidget::CacheUpdateWidget(QWidget *parent)
-    : KVBox(parent)
-    , m_trans(0)
+    : QWidget(parent)
+    , m_trans(nullptr)
     , m_lastRealProgress(0)
 {
+    QVBoxLayout *layout = new QVBoxLayout(this);
+
     m_headerLabel = new QLabel(this);
+    layout->addWidget(m_headerLabel);
 
     m_downloadView = new QListView(this);
+    layout->addWidget(m_downloadView);
 
     m_downloadModel = new QStandardItemModel(this);
     m_downloadView->setModel(m_downloadModel);
 
     m_downloadSpeedLabel = new QLabel(this);
+    layout->addWidget(m_downloadSpeedLabel);
+
     m_ETALabel = new QLabel(this);
+    layout->addWidget(m_ETALabel);
+
     m_totalProgress = new QProgressBar(this);
+    layout->addWidget(m_totalProgress);
 
     m_cancelButton = new QPushButton(this);
-    m_cancelButton->setText(i18n("Cancel"));
-    m_cancelButton->setIcon(KIcon("dialog-cancel"));
+    m_cancelButton->setText(tr("Cancel"));
+    m_cancelButton->setIcon(QIcon("dialog-cancel"));
+    layout->addWidget(m_cancelButton);
 }
 
 void CacheUpdateWidget::clear()
@@ -66,22 +75,22 @@ void CacheUpdateWidget::setTransaction(QApt::Transaction *trans)
     m_trans = trans;
     clear();
     m_cancelButton->setEnabled(m_trans->isCancellable());
-    connect(m_cancelButton, SIGNAL(pressed()),
-            m_trans, SLOT(cancel()));
+    connect(m_cancelButton, &QPushButton::pressed,
+            m_trans, &QApt::Transaction::cancel);
 
     // Listen for changes to the transaction
-    connect(m_trans, SIGNAL(cancellableChanged(bool)),
-            m_cancelButton, SLOT(setEnabled(bool)));
-    connect(m_trans, SIGNAL(statusChanged(QApt::TransactionStatus)),
-            this, SLOT(onTransactionStatusChanged(QApt::TransactionStatus)));
-    connect(m_trans, SIGNAL(progressChanged(int)),
-            this, SLOT(progressChanged(int)));
-    connect(m_trans, SIGNAL(downloadProgressChanged(QApt::DownloadProgress)),
-            this, SLOT(downloadProgressChanged(QApt::DownloadProgress)));
-    connect(m_trans, SIGNAL(downloadSpeedChanged(quint64)),
-            this, SLOT(updateDownloadSpeed(quint64)));
-    connect(m_trans, SIGNAL(downloadETAChanged(quint64)),
-            this, SLOT(updateETA(quint64)));
+    connect(m_trans, &QApt::Transaction::cancellableChanged,
+            m_cancelButton, &QPushButton::setEnabled);
+    connect(m_trans, &QApt::Transaction::statusChanged,
+            this, &CacheUpdateWidget::onTransactionStatusChanged);
+    connect(m_trans, &QApt::Transaction::progressChanged,
+            this, &CacheUpdateWidget::progressChanged);
+    connect(m_trans, &QApt::Transaction::downloadProgressChanged,
+            this, &CacheUpdateWidget::downloadProgressChanged);
+    connect(m_trans, &QApt::Transaction::downloadSpeedChanged,
+            this, &CacheUpdateWidget::updateDownloadSpeed);
+    connect(m_trans, &QApt::Transaction::downloadETAChanged,
+            this, &CacheUpdateWidget::updateETA);
 }
 
 void CacheUpdateWidget::addItem(const QString &message)
@@ -94,8 +103,7 @@ void CacheUpdateWidget::addItem(const QString &message)
 
 void CacheUpdateWidget::updateDownloadSpeed(quint64 speed)
 {
-    QString downloadSpeed = i18n("Download rate: %1/s",
-                                 KFormat().formatByteSize(speed));
+    QString downloadSpeed = "Download rate: " + QString::number(speed) + "/s";
 
     m_downloadSpeedLabel->setText(downloadSpeed);
 }
@@ -107,9 +115,9 @@ void CacheUpdateWidget::updateETA(quint64 ETA)
 
     if (ETAMilliseconds <= 0 || ETAMilliseconds > 14*24*60*60*1000) {
         // If ETA is less than zero or bigger than 2 weeks
-        timeRemaining = i18n("Unknown time remaining");
+        timeRemaining = tr("Unknown time remaining");
     } else {
-        timeRemaining = i18n("%1 remaining", KGlobal::locale()->prettyFormatDuration(ETAMilliseconds));
+        timeRemaining = tr("%1 remaining", QString::number(ETAMilliseconds).toStdString().c_str());
     }
     m_ETALabel->setText(timeRemaining);
 }
@@ -122,10 +130,10 @@ void CacheUpdateWidget::onTransactionStatusChanged(QApt::TransactionStatus statu
 
     switch (status) {
     case QApt::DownloadingStatus:
-        if (m_trans->role == QApt::UpdateCacheRole)
-            headerText = i18n("<b>Updating software sources</b>");
+        if (m_trans->role() == QApt::UpdateCacheRole)
+            headerText = tr("<b>Updating software sources</b>");
         else
-            headerText = i18n("<b>Downloading Packages</b>");
+            headerText = tr("<b>Downloading Packages</b>");
 
         m_headerLabel->setText(headerText);
         break;

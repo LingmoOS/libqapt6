@@ -25,9 +25,9 @@
 #include <QTextDocument>
 #include <QWidget>
 
-#include <KVBox>
+#include <QVBoxLayout>
 
-#include <LibQApt/Globals>
+#include <QApt6/Globals>
 
 class QLabel;
 class QListView;
@@ -40,7 +40,7 @@ namespace QApt {
     class DownloadProgress;
 }
 
-class CacheUpdateWidget : public KVBox
+class CacheUpdateWidget : public QWidget
 {
     Q_OBJECT
 public:
