@@ -112,7 +112,7 @@ if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
 endif()
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
-set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/QApt")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_FULL_CMAKEPACKAGEDIR}/QApt6")
 
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/QApt6Config.cmake.in"
