@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     container: docker.io/library/debian:trixie
     steps:
-    - name: Checkout Source
-      uses: actions/checkout@v3
-
     - name: Install Dependencies
       run: |
         apt-get update
-        apt-get install -y sudo
+        apt-get install -y sudo git
+
+    - name: Checkout Source
+      uses: actions/checkout@v3
 
     - name: Build Debian Src Package
       uses: LingmoOS/action-package-deb@0.0.2
