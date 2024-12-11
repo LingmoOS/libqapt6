@@ -15,6 +15,11 @@ jobs:
     - name: Checkout Source
       uses: actions/checkout@v3
 
+    - name: Install Dependencies
+      run: |
+        apt-get update
+        apt-get install -y sudo
+
     - name: Build Debian Src Package
       uses: LingmoOS/action-package-deb@0.0.2
       with:
