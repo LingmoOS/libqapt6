@@ -22,11 +22,7 @@ jobs:
 
     - name: Init Git Repo
       run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git init .
-        git add .
-        git commit -m "Initial commit" || true
+        git config --global --add safe.directory $(realpath .)
 
 
     - name: Build Debian Src Package
