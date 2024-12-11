@@ -1,0 +1,24 @@
+name: Auto CI Test Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  debian:
+    name: Debian 13 Trixie
+    runs-on: ubuntu-latest
+    container: docker.io/library/debian:trixie
+    steps:
+    - name: Checkout Source
+      uses: actions/checkout@v3
+
+    - name: Build Debian Src Package
+      uses: LingmoOS/action-package-deb@0.0.2
+      with:
+        build-binary: false
+        build-source: true
+        output-dir: ./debian-deb-output
+        source-dir: ./
