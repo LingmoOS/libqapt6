@@ -3,7 +3,7 @@
 export QT_SELECT=qt6
 
 %:
-	dh $@ --with kf6,pkgkde_symbolshelper
+	dh $@
 
 override_dh_auto_test:
 	# Disable dh_auto_test
