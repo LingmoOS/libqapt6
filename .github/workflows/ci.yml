@@ -20,6 +20,15 @@ jobs:
     - name: Checkout Source
       uses: actions/checkout@v3
 
+    - name: Init Git Repo
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git init .
+        git add .
+        git commit -m "Initial commit" || true
+
+
     - name: Build Debian Src Package
       uses: LingmoOS/action-package-deb@0.0.2
       with:
