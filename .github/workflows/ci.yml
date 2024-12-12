@@ -32,3 +32,14 @@ jobs:
         build-source: true
         output-dir: ./debian-deb-output
         source-dir: ./
+
+    - name: Upload to OBS
+      uses: LingmoOS/action-upload-to-obs@0.0.1
+      with:
+        remove-old-sources: true
+        obs-package-name: 'libqapt6'
+        obs-project-name: 'home:elysia:LingmoOS:CI'
+        obs-user-name: ${{ secrets.OBS_CI_USERNAME }}
+        obs-password: ${{ secrets.OBS_CI_TOKEN }}
+        obs-instance-url: 'https://api.opensuse.org'
+        local-package-dir: './debian-deb-output'
