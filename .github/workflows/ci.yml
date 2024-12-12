@@ -33,6 +33,12 @@ jobs:
         output-dir: ./debian-deb-output
         source-dir: ./
 
+    - uses: actions/upload-artifact@v4
+      with:
+        name: Source DEB Artifacts
+        path: debian-deb-output
+        compression-level: 9 # maximum compression
+
     - name: Upload to OBS
       uses: LingmoOS/action-upload-to-obs@0.0.1
       with:
