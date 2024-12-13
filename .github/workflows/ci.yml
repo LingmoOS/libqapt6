@@ -40,7 +40,7 @@ jobs:
         compression-level: 9 # maximum compression
 
     - name: Upload to OBS
-      uses: LingmoOS/action-upload-to-obs@0.0.2
+      uses: LingmoOS/action-upload-to-obs@0.0.3
       with:
         remove-old-sources: true
         obs-package-name: 'libqapt6'
