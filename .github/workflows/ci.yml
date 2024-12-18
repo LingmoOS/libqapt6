@@ -26,7 +26,7 @@ jobs:
 
 
     - name: Build Debian Src Package
-      uses: LingmoOS/action-package-deb@0.0.2
+      uses: LingmoOS/action-package-deb@0.0.4
       with:
         build-binary: false
         build-source: true
